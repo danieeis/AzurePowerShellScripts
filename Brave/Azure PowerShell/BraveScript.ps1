@@ -3,29 +3,35 @@
 #Params
 param(
         [string]$Location,
+        [string]$Prefix,
+        [string]$VM_SIZE,
+        [string]$SubnetPrefix,
+        [string]$VnetPrefix,
+        [string]$VMS,
         [Switch]$CreateRG
     )
 
 # Variables
-$VMS = 5
+$VMS = $VMS
 $RESOURCE_GROUP = "bb-vms-rg"
-$VM_NAME = "bb-" + $Location + "-vm-"
-$VNET = "bb-vnet" + $Location
-$fileUri = "https://github.com/danieeis/AzureScripts/blob/master/Brave/Azure%20PowerShell/InstallBrave.ps1"
-$VM_SIZE = "Standard_A1_v2"
+$VM_NAME = "bb-" + $Prefix + "-vm-"
+$VNET = "bb-vnet-" + $Prefix
+$SubnetName = "default-" + $Prefix
 $USERNAME = "brave"
 $PASS = ConvertTo-SecureString "bravemachine12." -AsPlainText -Force
-if ($Location -like "westus"){
-    $VM_SIZE = "Standard_D1"
-    Write-Host "Changed vm size : "$VM_SIZE
-}
 if ($CreateRG){
     Write-Host "Creating group: "$RESOURCE_GROUP
     New-AzResourceGroup -Name $RESOURCE_GROUP -Location $Location
 }
+New-AzVirtualNetworkSubnetConfig -Name $SubnetName -AddressPrefix $SubnetPrefix -ErrorAction Stop -ErrorVariable Error
+New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $Location -AddressPrefix $VnetPrefix -Subnet $SingleSubnet -ErrorAction Stop -ErrorVariable Error
+$fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
+$settings = @{"fileUris" = $fileUri};
 
-$Subnet= New-AzVirtualNetworkSubnetConfig -Name default -AddressPrefix 10.0.0.0/24
-New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $Location -AddressPrefix 10.0.0.0/16 -Subnet $Subnet
+$storageAcctName = "cs710032000c7a3ac04"
+$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
+$protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
+
 
 $Credentials = New-Object System.Management.Automation.PSCredential $USERNAME,$PASS
 For ($i = 1; $i -lt $VMS; $i++)
@@ -36,21 +42,35 @@ For ($i = 1; $i -lt $VMS; $i++)
     Write-Host "Creating VM: "$vmName
     New-AzVm `
     -ResourceGroupName $RESOURCE_GROUP `
+    -Location $Location `
     -Name $vmName `
     -VirtualNetworkName $VNET `
-    -SubnetName "default" `
-    -Image "MicrosoftWindowsDesktop:Windows-10:20h1-pro:latest" `
+    -SubnetName $SubnetName `
+    -Image "MicrosoftWindowsDesktop:Windows-10:rs4-pro:latest" `
     -Credential $Credentials `
     -OpenPorts 80,3389 `
     -PublicIpAddressName $IPNAME `
-    -Size $VM_SIZE
+    -Size $VM_SIZE -ErrorAction Stop -ErrorVariable Error
 
-    Set-AzVMCustomScriptExtension -ResourceGroupName $RESOURCE_GROUP `
-        -VMName $vmName `
-        -FileUri $fileUri `
-        -Location $Location `
-        -Run 'InstallBrave.ps1' `
-        -Name "InstallBrave"
+    Set-AzVMExtension -ResourceGroupName $RESOURCE_GROUP `
+    -Location $Location `
+    -VMName $vmName `
+    -Name "InstallBrave" `
+    -Publisher "Microsoft.Compute" `
+    -ExtensionType "CustomScriptExtension" `
+    -TypeHandlerVersion "1.10" `
+    -Settings $settings `
+    -ProtectedSettings $protectedSettings
 }
 
-Get-AzVM -ResourceGroupName $RESOURCE_GROUP 
+$AllVM = Get-AzVM -ResourceGroupName $RESOURCE_GROUP -Status
+foreach($vm in $AllVM){
+    if ($vm.PowerState -eq "VM running"){
+        Write-Host "Deallocating VM: " $vm.Name
+        Stop-AzVM -ResourceGroupName $RESOURCE_GROUP -Name $vm.Name -Force
+    }else{
+        Write-Host "Already Deallocated VM: " $vm.Name
+    }
+}
+
+Write-Host "Ya se desasignaron las VM"

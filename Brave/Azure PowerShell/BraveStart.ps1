@@ -1,14 +1,15 @@
 # Ejecutar a los 20 dias
 param(
-        [string[]]$Location
+        [string[]]$Prefix
     )
 $VMS = 5
 $RESOURCE_GROUP = "bb-vms-rg"
-$VM_NAME = "bb-" + $Location + "-vm-"
+$VM_NAME = "bb-" + $Prefix + "-vm-"
 For ($i = 1; $i -lt $VMS; $i++){
     $vmName = $VM_NAME + $i
     Write-Host "Starting VM: " $vmName
     Start-AzVM -ResourceGroupName $RESOURCE_GROUP  -Name $vmName
 }
+
 #Start-AzVM -ResourceGroupName bb-vms-rg -Name bb-westus-vm-4
 Write-Host "Ya se iniciaron las VM en " $Location
