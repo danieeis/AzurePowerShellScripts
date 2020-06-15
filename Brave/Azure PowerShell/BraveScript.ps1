@@ -11,6 +11,7 @@ $VMS = 5
 $RESOURCE_GROUP = "bb-vms-rg"
 $VM_NAME = "bb-" + $Location + "-vm-"
 $VNET = "bb-vnet" + $Location
+$fileUri = "https://github.com/danieeis/AzureScripts/blob/master/Brave/Azure%20PowerShell/InstallBrave.ps1"
 $VM_SIZE = "Standard_A1_v2"
 $USERNAME = "brave"
 $PASS = ConvertTo-SecureString "bravemachine12." -AsPlainText -Force
@@ -43,6 +44,13 @@ For ($i = 1; $i -lt $VMS; $i++)
     -OpenPorts 80,3389 `
     -PublicIpAddressName $IPNAME `
     -Size $VM_SIZE
+
+    Set-AzVMCustomScriptExtension -ResourceGroupName $RESOURCE_GROUP `
+        -VMName $vmName `
+        -FileUri $fileUri `
+        -Location $Location `
+        -Run 'InstallBrave.ps1' `
+        -Name "InstallBrave"
 }
 
 Get-AzVM -ResourceGroupName $RESOURCE_GROUP 

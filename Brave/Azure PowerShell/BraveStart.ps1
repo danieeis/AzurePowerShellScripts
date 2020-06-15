@@ -10,5 +10,5 @@ For ($i = 1; $i -lt $VMS; $i++){
     Write-Host "Starting VM: " $vmName
     Start-AzVM -ResourceGroupName $RESOURCE_GROUP  -Name $vmName
 }
-
+#Start-AzVM -ResourceGroupName bb-vms-rg -Name bb-westus-vm-4
 Write-Host "Ya se iniciaron las VM en " $Location
