@@ -16,4 +16,9 @@ Set-AzVMCustomScriptExtension -ResourceGroupName "bb-vms-rg" `
         -Location "westus" `
         -FileUri "https://github.com/danieeis/AzureScripts/blob/master/Brave/Azure%20PowerShell/InstallBrave.ps1" `
         -Run 'InstallBrave.ps1' `
-        -Name "InstallBrave"
+        -Name "InstallBrave2"
+
+Remove-AzVMCustomScriptExtension -ResourceGroupName "bb-vms-rg" `
+        -VMName "bb-westus-vm-4" `
+        -Name "InstallBrave2"
+        -Force
