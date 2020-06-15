@@ -28,13 +28,13 @@ New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $L
 $fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
 $settings = @{"fileUris" = $fileUri};
 
-$storageAcctName = "cs710032000c7a3ac04"
-$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
+$storageAcctName = "XXXX"
+$storageKey = "XXXX"
 $protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
 
 
 $Credentials = New-Object System.Management.Automation.PSCredential $USERNAME,$PASS
-For ($i = 1; $i -lt $VMS; $i++)
+For ($i = 1; $i -le $VMS; $i++)
 {
     $RANDOM =  Get-Random -Minimum 0 -Maximum 1000
     $vmName = $VM_NAME + $i
