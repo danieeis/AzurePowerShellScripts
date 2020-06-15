@@ -4,7 +4,7 @@ N   | VM's | Location        | Machine Size
 1   | 4    | westus          | Standard_D1
 2   | 4    | westcentralus   |
 3   | 4    | southcentralus  | Standard_A1_v2
-4   | 4    | centralus       |
+4   | 4    | centralus       | Standard_A1_v2
 5   | 4    | eastus          |
 6   | 0    | eastus2         |
 7   | 4    | northcentralus  |
