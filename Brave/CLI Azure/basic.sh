@@ -1,4 +1,4 @@
-export RESOURCE_GROUP=[sandbox resource group name]
+export RESOURCE_GROUP=bb-vms-rg
 export AZURE_REGION=centralus
 export AZURE_APP_PLAN=popupappplan-$RANDOM
 export AZURE_WEB_APP=popupwebapp-$RANDOM

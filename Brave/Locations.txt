@@ -1,0 +1,14 @@
+Locations for brave
+N   | VM's | Location        | Machine Size     | Command
+
+1   | 4    | westus          | Standard_D1      | .\BraveScript.ps1 -Location westus -Prefix wus -VM_SIZE Standard_D1 -SubnetPrefix "10.0.0.0/24" -VnetPrefix "10.0.0.0/16" -VMS 4
+2   | 2    | westcentralus   | Standard_D2d_v4  | .\BraveScript.ps1 -Location westcentralus -Prefix wcus -VM_SIZE Standard_D2d_v4  -SubnetPrefix "10.3.0.0/24" -VnetPrefix "10.3.0.0/16" -VMS 2
+3   | 4    | southcentralus  | Standard_A1_v2   | .\BraveScript.ps1 -Location southcentralus -Prefix scus -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.1.0.0/24" -VnetPrefix "10.1.0.0/16" -VMS 4
+4   | 4    | centralus       | Standard_A1_v2   | .\BraveScript.ps1 -Location centralus -Prefix cus -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.2.0.0/24" -VnetPrefix "10.2.0.0/16" -VMS 4
+5   | 4    | eastus          | Standard_A1_v2   | .\BraveScript.ps1 -Location eastus -Prefix eus -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.4.0.0/24" -VnetPrefix "10.4.0.0/16" -VMS 4
+6   | 0    | eastus2         | Reserved
+7   | 0    | northcentralus  | Non
+8   | 4    | canadacentral   | Standard_A1_v2   | .\BraveScript.ps1 -Location canadacentral -Prefix cc -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.6.0.0/24" -VnetPrefix "10.6.0.0/16" -VMS 4
+9   | 4    | canadaeast      | Standard_A1_v2   | .\BraveScript.ps1 -Location canadaeast -Prefix ce -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.7.0.0/24" -VnetPrefix "10.7.0.0/16" -VMS 4
+10  | 4    | brazilsouth     | Standard_A1_v2   | .\BraveScript.ps1 -Location brazilsouth -Prefix brs -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.8.0.0/24" -VnetPrefix "10.8.0.0/16" -VMS 4
+11  | 4    | westus2         | Standard_A1_v2   | .\BraveScript.ps1 -Location westus2 -Prefix eus -VM_SIZE Standard_A1_v2  -SubnetPrefix "10.5.0.0/24" -VnetPrefix "10.5.0.0/16" -VMS 4
