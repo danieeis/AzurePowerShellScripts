@@ -28,8 +28,8 @@ New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $L
 $fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
 $settings = @{"fileUris" = $fileUri};
 
-$storageAcctName = "XXXX"
-$storageKey = "XXXX"
+$storageAcctName = "cs710032000c7a3ac04"
+$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
 $protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
 
 
@@ -51,26 +51,6 @@ For ($i = 1; $i -le $VMS; $i++)
     -OpenPorts 80,3389 `
     -PublicIpAddressName $IPNAME `
     -Size $VM_SIZE -ErrorAction Stop -ErrorVariable Error
-
-    Set-AzVMExtension -ResourceGroupName $RESOURCE_GROUP `
-    -Location $Location `
-    -VMName $vmName `
-    -Name "InstallBrave" `
-    -Publisher "Microsoft.Compute" `
-    -ExtensionType "CustomScriptExtension" `
-    -TypeHandlerVersion "1.10" `
-    -Settings $settings `
-    -ProtectedSettings $protectedSettings
-}
-
-$AllVM = Get-AzVM -ResourceGroupName $RESOURCE_GROUP -Status
-foreach($vm in $AllVM){
-    if ($vm.PowerState -eq "VM running"){
-        Write-Host "Deallocating VM: " $vm.Name
-        Stop-AzVM -ResourceGroupName $RESOURCE_GROUP -Name $vm.Name -Force
-    }else{
-        Write-Host "Already Deallocated VM: " $vm.Name
-    }
 }
 
 Write-Host "Ya se desasignaron las VM"
