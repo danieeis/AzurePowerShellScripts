@@ -27,9 +27,11 @@ New-AzVirtualNetworkSubnetConfig -Name $SubnetName -AddressPrefix $SubnetPrefix 
 New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $Location -AddressPrefix $VnetPrefix -Subnet $SingleSubnet -ErrorAction Stop -ErrorVariable Error
 $fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
 $settings = @{"fileUris" = $fileUri};
+$json = (Get-Content "../../config.json" -Raw) | ConvertFrom-Json
 
-$storageAcctName = "cs710032000c7a3ac04"
-$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
+
+$storageAcctName = $json.storage_acount
+$storageKey = $json.storage_key
 $protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
 
 
