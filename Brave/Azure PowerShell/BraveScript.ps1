@@ -13,12 +13,13 @@ param(
 
 # Variables
 $VMS = $VMS
+$json = (Get-Content "../../config.json" -Raw) | ConvertFrom-Json
 $RESOURCE_GROUP = "bb-vms-rg"
 $VM_NAME = "bb-" + $Prefix + "-vm-"
 $VNET = "bb-vnet-" + $Prefix
 $SubnetName = "default-" + $Prefix
-$USERNAME = "brave"
-$PASS = ConvertTo-SecureString "bravemachine12." -AsPlainText -Force
+$USERNAME = $json.user
+$PASS = ConvertTo-SecureString $json.pass -AsPlainText -Force
 if ($CreateRG){
     Write-Host "Creating group: "$RESOURCE_GROUP
     New-AzResourceGroup -Name $RESOURCE_GROUP -Location $Location
@@ -27,7 +28,6 @@ New-AzVirtualNetworkSubnetConfig -Name $SubnetName -AddressPrefix $SubnetPrefix 
 New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $Location -AddressPrefix $VnetPrefix -Subnet $SingleSubnet -ErrorAction Stop -ErrorVariable Error
 $fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
 $settings = @{"fileUris" = $fileUri};
-$json = (Get-Content "../../config.json" -Raw) | ConvertFrom-Json
 
 
 $storageAcctName = $json.storage_acount
