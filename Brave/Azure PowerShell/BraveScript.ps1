@@ -13,12 +13,13 @@ param(
 
 # Variables
 $VMS = $VMS
+$json = (Get-Content "../../config.json" -Raw) | ConvertFrom-Json
 $RESOURCE_GROUP = "bb-vms-rg"
 $VM_NAME = "bb-" + $Prefix + "-vm-"
 $VNET = "bb-vnet-" + $Prefix
 $SubnetName = "default-" + $Prefix
-$USERNAME = "brave"
-$PASS = ConvertTo-SecureString "bravemachine12." -AsPlainText -Force
+$USERNAME = $json.user
+$PASS = ConvertTo-SecureString $json.pass -AsPlainText -Force
 if ($CreateRG){
     Write-Host "Creating group: "$RESOURCE_GROUP
     New-AzResourceGroup -Name $RESOURCE_GROUP -Location $Location
@@ -28,9 +29,10 @@ New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $L
 #$fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
 #$settings = @{"fileUris" = $fileUri};
 
-#$storageAcctName = "cs710032000c7a3ac04"
-#$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
-#$protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
+
+$storageAcctName = $json.storage_acount
+$storageKey = $json.storage_key
+$protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
 
 
 $Credentials = New-Object System.Management.Automation.PSCredential $USERNAME,$PASS
