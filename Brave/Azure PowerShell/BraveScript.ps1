@@ -25,12 +25,12 @@ if ($CreateRG){
 }
 New-AzVirtualNetworkSubnetConfig -Name $SubnetName -AddressPrefix $SubnetPrefix -ErrorAction Stop -ErrorVariable Error
 New-AzVirtualNetwork -Name $VNET -ResourceGroupName $RESOURCE_GROUP -Location $Location -AddressPrefix $VnetPrefix -Subnet $SingleSubnet -ErrorAction Stop -ErrorVariable Error
-$fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
-$settings = @{"fileUris" = $fileUri};
+#$fileUri = @("https://cs710032000c7a3ac04.blob.core.windows.net/scripts/InstallBrave.ps1")
+#$settings = @{"fileUris" = $fileUri};
 
-$storageAcctName = "cs710032000c7a3ac04"
-$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
-$protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
+#$storageAcctName = "cs710032000c7a3ac04"
+#$storageKey = "jFD8tITAzsFZbW9uTDrqa6y482dajSGVwUFbDLd45Clrzn4zRpb+KNxlKFvCNNw1kMiHzqSWbkoEq2p1vDUp4A=="
+#$protectedSettings = @{"storageAccountName" = $storageAcctName; "storageAccountKey" = $storageKey; "commandToExecute" = "powershell -ExecutionPolicy Unrestricted -File InstallBrave.ps1"};
 
 
 $Credentials = New-Object System.Management.Automation.PSCredential $USERNAME,$PASS
