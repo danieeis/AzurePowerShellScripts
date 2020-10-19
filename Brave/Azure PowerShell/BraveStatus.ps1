@@ -1,5 +1,6 @@
 # Ejecutar para ver el status
-
+Write-Host "Grupo de recursos: "
+Get-AzResourceGroup | Format-Table
 $RESOURCE_GROUP = "bb-vms-rg"
 $AllVMs = Get-AzVM -ResourceGroupName $RESOURCE_GROUP -Status
 foreach($vm in $AllVMs)

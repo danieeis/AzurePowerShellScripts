@@ -1,6 +1,7 @@
 # Ejecutar para ver las ips
-
-$RESOURCE_GROUP = "bb-vms-rg"
+param(
+        [string]$RESOURCE_GROUP
+    )
 $Ips = Get-AzNetworkInterface -ResourceGroupName $RESOURCE_GROUP
 $vmDetails = New-Object "System.Collections.Generic.List[psobject]"
 foreach ($instance in $Ips){
