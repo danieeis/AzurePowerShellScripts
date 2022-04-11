@@ -13,7 +13,7 @@ az containerapp env create \
 
 ## CREATE APP
 az containerapp create -n $CONTAINERAPP_NAME -g $RESOURCE_GROUP \
-    --image danieeis.azurecr.io/calculatorfcla:latest --environment $CONTAINERAPPS_ENVIRONMENT \
+    --image $IMAGE --environment $CONTAINERAPPS_ENVIRONMENT \
     --ingress external --target-port 80 \
     --registry-server $REGISTRY_SERVER --registry-username $REGISTRY_USER --registry-password $REGISTRY_PASSWORD \
     --query properties.configuration.ingress.fqdn \
