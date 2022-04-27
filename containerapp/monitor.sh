@@ -5,5 +5,5 @@ LOG_ANALYTICS_WORKSPACE_CLIENT_ID=`az containerapp env show --name $CONTAINERAPP
 
 az monitor log-analytics query \
   --workspace $LOG_ANALYTICS_WORKSPACE_CLIENT_ID \
-  --analytics-query "ContainerAppConsoleLogs_CL | where LogLevel_s == 'Error'" \
+  --analytics-query "ContainerAppConsoleLogs_CL | where 'Error'" \
   --out table
